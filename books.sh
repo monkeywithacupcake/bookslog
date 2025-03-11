@@ -12,6 +12,8 @@ echo "3. Exit"
 # Read the user's choice
 read -p "Enter your choice (1-3): " choice
 
+# TODO: handle annual (or other) summary printings
+
 
 generate_safe_filename() {
   local input_string="$1"
@@ -48,6 +50,10 @@ case $choice in
     echo "Author: $book_author" >> ./logs/$safe_name
     read -p "Your Rating (1-5): " book_rating
     echo "Rating: $book_rating" >> ./logs/$safe_name
+    # TODO: handle dates
+    # TODO: handle updates
+    # TODO: handle book type
+    # TODO: handle page numbers/length
 
     ;;
   2)
@@ -55,6 +61,8 @@ case $choice in
     # find the book
     read -p "Book Title: " book
     grep -ril $book .
+    # TODO: decide how to display a book
+    # TODO: decide what to display if not found (or more than one found)
     ;;
   3)
     echo "Exiting program."
