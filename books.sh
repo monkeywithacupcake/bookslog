@@ -34,6 +34,16 @@ generate_safe_filename() {
   echo "$input_string.txt"
 }
 
+#handle_answer() {
+    # TODO make a generic handler to ensure
+    # not bad input and allow user to exit
+    # and allow user to skip question
+#}
+#update_book() {
+    # TODO make a generic updater to allow
+    # user to update previous entry
+#}
+
 # Perform actions based on the user's choice
 case $choice in
   1)
@@ -48,13 +58,22 @@ case $choice in
 
     read -p "Author: " book_author
     echo "Author: $book_author" >> ./logs/$safe_name
+    read -p "Format print (p) or audio (a): " book_pa
+    if [[ "$book_pa" = "p" ]]; then
+     echo "Format: Print" >> ./logs/$safe_name
+     read -p "How many pages?: " book_pages
+     echo "Pages: $book_pages" >> ./logs/$safe_name
+    else 
+     echo "Format: Audio" >> ./logs/$safe_name
+     read -p "How many minutes (approx)?: " book_minutes
+     echo "Minutes: $book_minutes" >> ./logs/$safe_name
+    fi
+    # rating
     read -p "Your Rating (1-5): " book_rating
     echo "Rating: $book_rating" >> ./logs/$safe_name
+    
+       
     # TODO: handle dates
-    # TODO: handle updates
-    # TODO: handle book type
-    # TODO: handle page numbers/length
-
     ;;
   2)
     echo "Search Books"
