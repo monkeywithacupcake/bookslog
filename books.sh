@@ -34,6 +34,13 @@ generate_safe_filename() {
   echo "$input_string.txt"
 }
 
+is_valid_date() {
+    local xd="$1"
+    local date_format="%Y-%m-%d"
+    [[ "$(date "+$date_format" -d "$xd" 2>/dev/null)" == "$xd" ]]
+}
+
+
 #handle_answer() {
     # TODO make a generic handler to ensure
     # not bad input and allow user to exit
@@ -71,9 +78,31 @@ case $choice in
     # rating
     read -p "Your Rating (1-5): " book_rating
     echo "Rating: $book_rating" >> ./logs/$safe_name
-    
-       
     # TODO: handle dates
+    read -p "Do you want to enter start finish dates? (y/n): " add_dates
+    if [[ "$add_dates" =~ ^[Yy]$ ]]; then
+        #while true; do
+            read -p "Start date (YYYY-MM-DD): " start_date
+            #if is_valid_date "$start_date"; then
+            #    break
+            #else
+            #echo "Invalid input. Please try again."
+            #fi
+        #done
+        echo "You entered: $start_date"
+        echo "Start: $start_date" >> ./logs/$safe_name
+        #while true; do
+            read -p "Finish date (YYYY-MM-DD): " finish_date
+            #fgood=$(is_valid_date "$finish_date")
+            #if [[ $fgood = 'good' ]]; then
+            #    break
+            #else
+            #echo "Invalid input. Please try again."
+            #fi
+        #done
+        echo "You entered: $finish_date"
+        echo "Start: $finish_date" >> ./logs/$safe_name
+    fi
     ;;
   2)
     echo "Search Books"
