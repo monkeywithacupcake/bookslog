@@ -30,8 +30,25 @@ validate_date_range() {
   fi
 }
 
+calc_days_between_dates(){
+  local date1="$1"
+  local date2="$2"
+  local d_format='%Y-%m-%d' 
+  # Convert dates to timestamps
+  local timestamp1=$(date -j -f "$d_format" "$date1" +%s)
+  local timestamp2=$(date -j -f "$d_format" "$date2" +%s)
+  
+  diff_seconds=$((timestamp2 - timestamp1))
+  diff_days=$((diff_seconds / 86400))
+
+ echo "$diff_days"
+}
+
 # date_to_check="$1"
 # start_date="$2"
 # end_date="$3"
 
-# validate_date_range "$date_to_check" "$start_date" "$end_date"
+##date_to_check="$1"
+#start_date="1900-01-01"
+#end_date=$(date +%Y-%m-%d)
+validate_date_range "$date_to_check" "$start_date" "$end_date"
