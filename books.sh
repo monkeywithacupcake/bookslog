@@ -4,14 +4,21 @@ source test_date.sh
 
 today=$(date +%Y-%m-%d)
 
+# Try out some colors
+bold=$(tput bold)
+normal=$(tput sgr0)
+mag=$(tput setaf 5)
+blue=$(tput setaf 6)
+
+
 # Display a welcome message
-echo "Yes! Updating Books"
+echo "${mag}${bold}Yes! Updating Books${normal}"
 
 # Present a menu of options
 echo "What do you want to do:"
-echo "1. Log a Book"
-echo "2. Search Books"
-echo "3. Exit"
+echo " 1. Log a Book"
+echo " 2. Search Books"
+echo " 3. Exit"
 
 # Read the user's choice
 read -p "Enter your choice (1-3): " choice
@@ -55,13 +62,14 @@ generate_safe_filename() {
 # Perform actions based on the user's choice
 case $choice in
   1)
-    echo "Log a Book"
-    read -p "Book Title: " book_title
+    echo "${blue}Log a Book will guide you fill in the blank style${normal}"
+    echo "use quotes for strings with spaces, otherwise type normally"
+    read -p "${bold}Book Title: " book_title
     safe_name=$(generate_safe_filename "$book_title")
 
     if [[ ! -e ./logs/$safe_name ]]; then
         echo "Title: $book_title" >> ./logs/$safe_name
-    else echo "File $safe_name already exists"
+    else echo "${bold}${mag}File $safe_name already exists${normal}"
     fi
 
     read -p "Author: " book_author
@@ -100,7 +108,7 @@ case $choice in
             fi
         done
         read_days=$(calc_days_between_dates "$book_start" "$book_finish")
-        echo "$read_days days spent reading"
+        echo "${mag}${bold}$read_days days spent reading${normal}"
         echo "Finish: $book_finish" >> ./logs/$safe_name
     fi
     ;;
