@@ -1,3 +1,0 @@
-Title: "This is NOT a Book"
-Author: "Some Author"
-Rating: 5

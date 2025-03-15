@@ -1,0 +1,7 @@
+Title: "An Awesome Book"
+Author: "Good Author Person"
+Format: Print
+Pages: 333
+Rating: 3
+Start: 2025-02-03
+Finish: 2025-02-07
