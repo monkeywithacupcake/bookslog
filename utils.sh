@@ -1,6 +1,31 @@
 #!/bin/bash
+
+# utility functions for bookslog
+
+#####################
+# Pretty Functions
+#
+# colors
+CYAN=$(tput setaf 14)
+MAG=$(tput setaf 5)
+NC=$(tput sgr0)
+
+# Function to display the prompt and read input
+prompt_user() {
+  local prompt_text="$1"
+  local variable_name="$2"
+  
+  printf "${MAG}>> ${CYAN}%s${NC}: " "$prompt_text"
+  read "$variable_name"
+}
+
+#####################
+# Date Functions
+#
 # Function to validate if a date is within a range
 validate_date_range() {
+  # use like
+  #validate_date_range "$date_to_check" "$start_date" "$end_date"
   local date_to_check="$1"
   local start_date="$2"
   local end_date="$3"
@@ -15,22 +40,15 @@ validate_date_range() {
     echo "Error: Invalid date format. Please use a format that 'date' can understand."
     return 1
   fi
-
-  # Compare the timestamps
   if [[ "$timestamp_check" -ge "$timestamp_start" && "$timestamp_check" -le "$timestamp_end" ]]; then
-    echo "Date is within the range."
-    #diff_seconds=$((timestamp_end - timestamp_check))
-    #diff_days=$((diff_seconds / 86400))
-
-    #echo "Number of days between check and end: $diff_days"
     return 0
   else
-    echo "Date is outside the range."
     return 1
   fi
 }
 
 calc_days_between_dates(){
+  # use like calc_days_between_dates a_day another_day
   local date1="$1"
   local date2="$2"
   local d_format='%Y-%m-%d' 
@@ -44,11 +62,3 @@ calc_days_between_dates(){
  echo "$diff_days"
 }
 
-# date_to_check="$1"
-# start_date="$2"
-# end_date="$3"
-
-##date_to_check="$1"
-#start_date="1900-01-01"
-#end_date=$(date +%Y-%m-%d)
-validate_date_range "$date_to_check" "$start_date" "$end_date"
