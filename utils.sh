@@ -5,11 +5,17 @@
 #####################
 # Pretty Functions
 #
-# colors
+# styles
+bold=$(tput bold)
 CYAN=$(tput setaf 14)
 MAG=$(tput setaf 5)
 NC=$(tput sgr0)
 
+# Function to show pretty text
+pretty_print(){
+  local the_text="$1"
+  echo "${bold}${MAG}>> ${CYAN}$the_text${NC}"
+}
 # Function to display the prompt and read input
 prompt_user() {
   local prompt_text="$1"
@@ -17,6 +23,28 @@ prompt_user() {
   
   printf "${MAG}>> ${CYAN}%s${NC}: " "$prompt_text"
   read "$variable_name"
+}
+
+#####################
+# String Functios
+#
+generate_safe_filename() {
+  local input_string="$1"
+  # Replace spaces with underscores
+  input_string="${input_string// /_}"
+  # Remove or replace special characters (excluding alphanumeric, underscore, hyphen, and period)
+  input_string=$(sed 's/[^a-zA-Z0-9._-]//g' <<< "$input_string")
+  # Make it all lower case
+  input_string="$(tr [A-Z] [a-z] <<< "$input_string")"
+  # Truncate to a maximum length (e.g., 64 characters)
+  max_length=64
+  if [[ ${#input_string} -gt "$max_length" ]]; then
+    input_string="${input_string:0:$max_length}"
+  fi
+  # Remove leading/trailing periods and underscores
+  input_string=$(sed 's/^[._-]*//;s/[._-]*$//' <<< "$input_string")
+    
+  echo "$input_string.txt"
 }
 
 #####################
