@@ -7,6 +7,8 @@ today=$(date +%Y-%m-%d)
 # Display a welcome message
 pretty_print "Yes! Updating Books!"
 
+while true
+do
 # Present a menu of options
 echo "What do you want to do:"
 echo " 1. Log a Book"
@@ -38,7 +40,8 @@ case $choice in
 
     if [[ ! -e ./logs/$safe_name ]]; then
         echo "Title: $book_title" >> ./logs/$safe_name
-    else pretty_print "File $safe_name already exists$"
+    else err_print "File $safe_name already exists"
+    break
     fi
 
     prompt_user "Author: " book_author
@@ -50,7 +53,7 @@ case $choice in
      echo "Pages: $book_pages" >> ./logs/$safe_name
     else 
      echo "Format: Audio" >> ./logs/$safe_name
-     rprompt_user "How many minutes (approx)?: " book_minutes
+     prompt_user "How many minutes (approx)?: " book_minutes
      echo "Minutes: $book_minutes" >> ./logs/$safe_name
     fi
     # rating
@@ -64,7 +67,7 @@ case $choice in
             if validate_date_range "$book_start" "1900-01-01" "$today"; then 
                 break
             else
-                echo "Invalid input. Please try again."
+                err_print "Invalid input. Please try again."
             fi
         done
         echo "Start: $book_start" >> ./logs/$safe_name
@@ -73,7 +76,7 @@ case $choice in
             if validate_date_range "$book_finish" "$book_start" "$today"; then 
                 break
             else
-                echo "Invalid input. Please try again."
+                err_print "Invalid input. Please try again."
             fi
         done
         read_days=$(calc_days_between_dates "$book_start" "$book_finish")
@@ -99,3 +102,4 @@ case $choice in
 esac
 
 # End of program
+done

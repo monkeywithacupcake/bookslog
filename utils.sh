@@ -9,6 +9,7 @@
 bold=$(tput bold)
 CYAN=$(tput setaf 14)
 MAG=$(tput setaf 5)
+YEL=$(tput setaf 3)
 NC=$(tput sgr0)
 
 # Function to show pretty text
@@ -16,17 +17,23 @@ pretty_print(){
   local the_text="$1"
   echo "${bold}${MAG}>> ${CYAN}$the_text${NC}"
 }
+# Function to show error
+err_print(){
+  local the_text="$1"
+  echo "${bold}${YEL}!!! ${MAG}$the_text ${YEL}!!!${NC}"
+}
 # Function to display the prompt and read input
 prompt_user() {
   local prompt_text="$1"
-  local variable_name="$2"
-  
+  local var_name="$2"
   printf "${MAG}>> ${CYAN}%s${NC}: " "$prompt_text"
-  read "$variable_name"
+  read "$var_name" 
 }
 
+
+
 #####################
-# String Functios
+# String Functions
 #
 generate_safe_filename() {
   local input_string="$1"
