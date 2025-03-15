@@ -1,11 +1,14 @@
 #!/bin/bash
 
 source utils.sh
+source analytics.sh
 
 today=$(date +%Y-%m-%d)
 
 # Display a welcome message
 pretty_print "Yes! Updating Books!"
+
+trap 'echo "Exiting...Any Book Information you entered is saved"; exit 0' SIGINT
 
 while true
 do
@@ -35,6 +38,7 @@ case $choice in
   1)
     pretty_print "Log a Book will guide you fill-in-the-blank style"
     echo "use quotes around 'strings with spaces', otherwise type normally"
+    echo ">> press Ctrl+C to exit <<"
     prompt_user "${bold}Book Title: " book_title
     safe_name=$(generate_safe_filename "$book_title")
 
@@ -50,10 +54,12 @@ case $choice in
     if [[ "$book_pa" = "p" ]]; then
      echo "Format: Print" >> ./logs/$safe_name
      prompt_user "How many pages?: " book_pages
+     book_len=$book_pages
      echo "Pages: $book_pages" >> ./logs/$safe_name
     else 
      echo "Format: Audio" >> ./logs/$safe_name
      prompt_user "How many minutes (approx)?: " book_minutes
+     book_len=$book_minutes
      echo "Minutes: $book_minutes" >> ./logs/$safe_name
     fi
     # rating
@@ -80,15 +86,16 @@ case $choice in
             fi
         done
         read_days=$(calc_days_between_dates "$book_start" "$book_finish")
-        pretty_print "$read_days days spent reading"
         echo "Finish: $book_finish" >> ./logs/$safe_name
+        pretty_print "$read_days days spent reading"
+        pretty_print "$(report_reading_per_day $book_len $read_days $book_type)"
     fi
     ;;
   2)
     echo "Search Books"
     # find the book
     read -p "Book Title: " book
-    grep -ril $book .
+    grep -ril $book ./logs
     # TODO: decide how to display a book
     # TODO: decide what to display if not found (or more than one found)
     ;;
