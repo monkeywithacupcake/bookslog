@@ -31,6 +31,11 @@ prompt_user "Enter your choice (1-3): " choice
 #update_book() {
     # TODO make a generic updater to allow
     # user to update previous entry
+    # use something like gsed with a backup
+    # after user verify then delete backup
+    #gsed -i.bkp 's/blue/green/' colors.txt # saves backup as colors.txt.bkp
+    # if need to make a global change, changes will be done to all files
+    # gsed -i.bkp 's/bad/good/' f1.txt f2.txt fn.txt # saves all w/.bkp
 #}
 
 # Perform actions based on the user's choice
@@ -50,17 +55,17 @@ case $choice in
 
     prompt_user "Author: " book_author
     echo "Author: $book_author" >> ./logs/$safe_name
-    prompt_user "Format print (p) or audio (a): " book_pa
-    if [[ "$book_pa" = "p" ]]; then
+    prompt_user "Format print (p) or audio (a): " book_format
+    if [[ "$book_format" = "p" ]]; then
      echo "Format: Print" >> ./logs/$safe_name
      prompt_user "How many pages?: " book_pages
      book_len=$book_pages
-     echo "Pages: $book_pages" >> ./logs/$safe_name
+     echo "Length: $book_pages" >> ./logs/$safe_name
     else 
      echo "Format: Audio" >> ./logs/$safe_name
      prompt_user "How many minutes (approx)?: " book_minutes
      book_len=$book_minutes
-     echo "Minutes: $book_minutes" >> ./logs/$safe_name
+     echo "Length: $book_minutes" >> ./logs/$safe_name
     fi
     # rating
     prompt_user "Your Rating (1-5): " book_rating
@@ -88,7 +93,7 @@ case $choice in
         read_days=$(calc_days_between_dates "$book_start" "$book_finish")
         echo "Finish: $book_finish" >> ./logs/$safe_name
         pretty_print "$read_days days spent reading"
-        pretty_print "$(report_reading_per_day $book_len $read_days $book_type)"
+        pretty_print "$(report_reading_per_day $book_len $read_days $book_format)"
     fi
     ;;
   2)

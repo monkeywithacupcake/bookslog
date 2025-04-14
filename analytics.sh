@@ -22,3 +22,5 @@ report_reading_per_day(){
     rpd=$(reading_per_day $book_length $days)
     echo "$rpd $twrd per day"
 }
+
+#echo "$(report_reading_per_day $1 $2 $3)"
